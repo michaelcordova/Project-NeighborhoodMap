@@ -1,4 +1,8 @@
-//* Udacity Project Neighborhood Map *//
+/*
+Project: Neighborhood Map
+Developed by: Michael Cordova
+For: Udacity
+*/
 
 var data = {
         restaurants: [
@@ -49,6 +53,52 @@ function initMap() {
           center: dallasTexas
         });
 
+    ko.applyBindings(new ViewModel());
+}
+
+// This function load all markers to the map
+function showLocations() {
+    hideMarkers(markers);
+    var bounds = new google.maps.LatLngBounds();
+
+    // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+        bounds.extend(markers[i].position);
+    }
+    map.fitBounds(bounds);
+}
+
+// This function show the marker for the picked placed.
+function showPickedPlace() {
+    hideMarkers(markers);
+
+}
+
+// This function put information on the infowindow.
+function populateInfoWindow(marker, infowindow) {
+    infowindow.setContent('<div><h3>' + marker.title + '</h3></div>');
+    infowindow.open(map, marker);
+}
+
+function hideMarkers(markers) {
+    for (var i = 0; i < markers.length; i++){
+        markers[i].setMap(null);
+    }
+}
+
+
+/*
+Knockout JS
+*/
+var ViewModel = function() {
+    // Create variables with observables
+    this.categoryList = ko.observableArray([]);
+    this.choosenCategory = ko.observable();
+    this.placesList = ko.observableArray([]);
+    this.choosenPlace = ko.observable();
+    this.places = ko.observable();
+
     var largeInfoWindow = new google.maps.InfoWindow();
 
     // Use google icons for each category
@@ -76,68 +126,6 @@ function initMap() {
         }
     };
 
-    // Loop to create markers from the variable data.
-    for (var key in data){
-        // Array for key in data
-        var dataCategory = data[key];
-        for (var i = 0; i < dataCategory.length; i++){
-            position = dataCategory[i].location;
-            var title = dataCategory[i].name;
-            var marker = new google.maps.Marker({
-                position: position,
-                title: title,
-                icon: icons[dataCategory[i].type].image,
-                animation: google.maps.Animation.DROP,
-                id: i,
-            });
-            markers.push(marker);
-            marker.addListener('click', function() {
-                populateInfoWindow(this, largeInfoWindow);
-            });
-        }
-    }
-}
-
-// This function load all markers to the map
-function showLocations() {
-    hideMarkers(markers);
-    var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-        bounds.extend(markers[i].position);
-    }
-    map.fitBounds(bounds);
-}
-
-// This function show the marker for the picked placed.
-function showPickedPlace() {
-    hideMarkers(markers);
-
-
-}
-
-// This function put information on the infowindow.
-function populateInfoWindow(marker, infowindow) {
-    infowindow.setContent('<div><h3>' + marker.title + '</h3></div>');
-    infowindow.open(map, marker);
-}
-
-function hideMarkers(markers) {
-    for (var i = 0; i < markers.length; i++){
-        markers[i].setMap(null);
-    }
-}
-
-//**** Knockout JS ****//
-var ViewModel = function() {
-    // Create variables with observables
-    this.categoryList = ko.observableArray([]);
-    this.choosenCategory = ko.observable();
-    this.placesList = ko.observableArray([]);
-    this.choosenPlace = ko.observable();
-    this.places = ko.observable();
-
     // Loop through categories in data to get the name of the places
     for (var categories in data) {
         if (data.hasOwnProperty(categories)) {
@@ -146,6 +134,19 @@ var ViewModel = function() {
             for (var places in categoryName) {
                 if (categoryName.hasOwnProperty(places)) {
                     this.placesList.push({name: categoryName[places].name});
+                    var position = categoryName[places].location;
+                    var title = categoryName[places].name;
+                    var marker = new google.maps.Marker({
+                        position: position,
+                        title: title,
+                        icon: icons[categoryName[places].type].image,
+                        animation: google.maps.Animation.Drop,
+                        id: places
+                    });
+                    markers.push(marker);
+                    marker.addListener('click', function() {
+                        populateInfoWindow(this, largeInfoWindow);
+                    });
                 }
             }
         }
@@ -153,8 +154,9 @@ var ViewModel = function() {
 }.bind(this);
 
 
-ko.applyBindings(new ViewModel());
-
+/*
+Add Listeners
+*/
 document.getElementById('place-picker').addEventListener('click', function() {
     showPickedPlace();
 });
