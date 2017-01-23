@@ -14,21 +14,15 @@
             </div>
             <section id="location_filter">
                 <span>Show all places </span>
-                <input onclick="showLocations()" type="button" class="button" id="" value="Go">
+                <input data-bind="click: showLocations" type="button" class="button" id="" value="Go">
+
                 <span>Pick a place: </span>
                 <select id="pick_place" data-bind="options: placesList,
                                     optionsCaption: 'Choose...',
                                     optionsText: 'name',
-                                    value: choosenPlace">
+                                    value: chosenPlace,
+                                    event: {change: chosenPlaceMarker}">
                 </select>
-                <input type="button" class="button" id="place-picker" value="Go">
-                <span>Filter by category</span>
-                <select id="filter_by_type" data-bind="options: categoryList,
-                                    optionsCaption: 'Choose...',
-                                    optionsText: 'name',
-                                    value: choosenCategory">
-                </select>
-                <input type="button" class="button" id="" value="Go">
             </section>
             <br>
             <div id="map"></div>

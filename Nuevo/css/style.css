@@ -1,0 +1,22 @@
+* {
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+
+#map {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#list_overmap {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    z-index: 99;
+    width: 300px;
+    background-color: white;
+    opacity: .6;
+}
