@@ -38,45 +38,73 @@ Create array for markers, create coordinates location for when the map load,
 and function to initiate Google Map.
 */
 
-
+var markers = [];
 var map;
 var bounds;
 var infowindow;
-var markers = [];
-
 var dallasTexas = {lat: 32.775937, lng: -96.804616};
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: dallasTexas
-
-
     });
 
     infowindow = new google.maps.InfoWindow();
     bounds = new google.maps.LatLngBounds();
 
     // Start knockout
+    createMarkers();
+
     ko.applyBindings(new ViewModel());
 }
 
+// Icons Colors.  Call only once when the javascript load.
+var iconBaseColor = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+var iconChangeColor = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
 
-// Create Markers
+var addMarkers = function(location, title, timeout) {
+    // Drop marker with some delay between them.
+    window.setTimeout(function() {
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: title,
+            icon: iconBaseColor,
+            animation: google.maps.Animation.DROP
+        });
+        // Add listener event to open marker on click.
+        marker.addListener('click', function() {
+            populateInfoWindow(marker, infowindow);
+        });
+        // Change the color of marker when the mouse is over the pin
+        marker.addListener('mouseover', function() {
+            marker.setIcon(iconChangeColor);
+        });
+        // Change the color of marker back to original color when mouse is out.
+        marker.addListener('mouseout', function() {
+            marker.setIcon(iconBaseColor);
+        });
+        markers.push(marker);
+
+
+    }, timeout);
+
+};
+
+
+
 var createMarkers = function() {
-    var self = this;
     clearMarkers();
 
     for (var i = 0; i < data.length; i++) {
-        self.name = data[i].name;
-        self.position = data[i].location;
-        self.timeout = i * 450;
-        self.addingMarkers = ko.observable(new addMarkers(self.position, self.name, self.timeout));
-        console.log (i);
+        name = data[i].name;
+        position = data[i].location;
+        timeout = i * 450;
+        addMarkers(position, name, timeout);
     }
 };
 
-// Function to clear markers.
 var clearMarkers = function() {
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
@@ -86,79 +114,12 @@ var clearMarkers = function() {
 
 
 
-
-// Icons Colors.
-var iconBaseColor = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
-var iconChangeColor = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
-
-// Function to add created markers to the array.
-var addMarkers = function(location, title, timeout) {
-    var self = this;
-    // Drop marker with some delay between them.
-    window.setTimeout(function() {
-        self.marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            title: title,
-            icon: iconBaseColor,
-            animation: google.maps.Animation.DROP
-        });
-        // Add listener event to open marker on click.
-        self.marker.addListener('click', function() {
-            self.populateTheInfoWindow = ko.observable(new populateInfoWindow(self.marker, infowindow));
-        });
-        // Change the color of marker when the mouse is over the pin
-        self.marker.addListener('mouseover', function() {
-            self.marker.setIcon(iconChangeColor);
-        });
-        // Change the color of marker back to original color when mouse is out.
-        self.marker.addListener('mouseout', function() {
-            self.marker.setIcon(iconBaseColor);
-        });
-
-        // ko.utils.arrayPushAll(self.markers, self.marker);
-        markers.push(self.marker);
-
-
-    }, timeout);
-
-
-};
-
-var dataLocation = function(thisData) {
-    var self = this;
-    self.name = ko.observable(thisData.name);
-    self.location = ko.observable(thisData.location);
-    self.type = ko.observable(thisData.type);
-};
-
-
 /*
 Knockout JS
 */
 var ViewModel = function() {
     var self = this;
-    self.locationList = ko.observableArray([]);
-
-    data.forEach(function(locationItem) {
-        self.locationList.push(new dataLocation(locationItem));
-    });
-
-    self.createMarker = ko.observable(new createMarkers());
-
-    /*
-    Operators
-    */
-
-    // Function to clear all markers on call.
-    self.clearAllMarkers = function() {
-        clearMarkers();
-    };
-
-    self.loadAllMarkers = function() {
-        createMarkers();
-    };
-
+    var prueba = ["today"];
 
 
 }.bind(this);

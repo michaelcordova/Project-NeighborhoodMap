@@ -10,11 +10,12 @@
         <div class="container">
             <div id="map"></div>
             <div id="list_overmap">
-                <button onclick="clearMarkers()">Remove All</button>
-                <button onclick="createMarkers()">Reload</button>
-                <ul data-bind="foreach: markers">
+                <h2>Locations:</h2>
+                <ul data-bind="foreach: locationList">
                     <li data-bind="text: name"></li>
                 </ul>
+                <button data-bind="click: clearAllMarkers">Remove All</button>
+                <button data-bind="click: loadAllMarkers">Reload</button>
             </div>
         </div>
     </body>
