@@ -79,7 +79,7 @@ var getYelp = function(marker) {
     };
 
     var httpMethod = 'GET',
-    url = 'http://api.yelp.com/v2/search?',
+    url = 'https://api.yelp.com/v2/search?',
     parameters = {
         oauth_consumer_key : 'pbgEiH-pMbycTGcDENnrTw',
         oauth_token : 'mGh9RGiZrOdMALoWyjLwzyxcccxYE1QH',
