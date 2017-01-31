@@ -20,7 +20,12 @@
     background-color: white;
     opacity: .6;
 }
+#yelp_text {
+    font-style: italic;
+}
 
+
+/* Style from design shark*/
 h2 {
     padding-left: 5px;
 }

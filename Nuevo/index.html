@@ -11,9 +11,17 @@
             <div id="map"></div>
             <div id="list_overmap">
                 <h2>Locations:</h2>
-                <ul data-bind="foreach: locationList">
-                    <li data-bind="text: name"></li>
+                <ul data-bind="foreach: locationFiltered">
+                    <li data-bind="text: name,
+                                   click: $parent.markerInfo,
+                                   event: {
+                                       mouseover: $parent.enableMarkerColor,
+                                       mouseout: $parent.disableMarkerColor
+                                    }"></li>
                 </ul>
+                <br>
+                <h3>Filter locations by name</h3>
+                <p>Filter: <input data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
                 <button data-bind="click: clearAllMarkers">Remove All</button>
                 <button data-bind="click: loadAllMarkers">Reload</button>
             </div>
@@ -21,8 +29,13 @@
     </body>
 
 
-
+    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/knockout-3.2.0.js"></script>
+    <!-- <script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
+    <script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script> -->
+    <script src="js/yelpAPI.js"></script>
+    <script src="js/node_modules/oauth-signer/oauth-signer-old.js"></script>
+    <script src="js/node_modules/oauth-signature/dist/oauth-signature.js"></script>
     <script src="js/app.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDerE7jSLDtOfiF9AyVjnr2cAE1tnEiBBo&libraries=places,drawing,geometry&v=3&callback=initMap">
     </script>
