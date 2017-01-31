@@ -264,8 +264,13 @@ var stringStartsWith = function (string, startsWith) {
 // This function put information on the infowindow.
 function populateInfoWindow(marker, infowindow) {
     infowindow.setContent('<div><h3>' + marker.title + '</h3></div>' +
-                          '<img id="yelp_image"><br>' + '<img id="yelp"><br>' +
-                          '<p id="yelp_text"></p>');
+                          '<div id=img_place_holder>' +
+                            '<img id="yelp_image"><br>' +
+                            '<img id="yelp"><br>' +
+                          '</div>' +
+                          '<div id="yelp_text_holder">' +
+                            '<p id="yelp_text"></p>' +
+                          '</div>');
     getYelp(marker);
     infowindow.open(map, marker);
 

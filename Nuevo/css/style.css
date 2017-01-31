@@ -24,6 +24,17 @@
     font-style: italic;
 }
 
+#img_place_holder {
+    float: left;
+    width: 100px;
+}
+
+#yelp_text_holder {
+    float: right;
+    width: 295px;
+    padding-left: 5px;
+}
+
 
 /* Style from design shark*/
 h2 {
