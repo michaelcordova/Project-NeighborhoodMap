@@ -11,34 +11,29 @@ var data = [
         name: "Texas Spice",
         location: {lat: 32.7758770087906, lng: -96.8047791739758},
         type: 'restaurant',
-        visible: true
     }, {
         name: "Texas de Brazil",
         location: {lat: 32.954765, lng: -96.830150},
         type: "restaurant",
-        visible: true
     }, {
         name: "The Sixth Floor Museum",
         location: {lat: 32.7799763, lng: -96.8085353},
         type: "entertainment",
-        visible: true
     }, {
         name: "NorthPark Center",
         location: {lat: 32.868952, lng: -96.773577},
         type: "shopping",
-        visible: true
     }, {
         name: "Irving Mall",
         location: {lat: 32.839843, lng: -96.996469},
         type: "shopping",
-        visible: true
     }
 ];
 
 
 /*
-Create array for markers, create coordinates location for when the map load,
-and function to initiate Google Map.
+* Create array for markers, create coordinates location when the map load,
+* and function to initiate Google Map.
 */
 
 var map;
@@ -192,7 +187,7 @@ var dataLocation = function(thisData) {
 
 
 /*
-Knockout JS
+* Knockout JS
 */
 var ViewModel = function() {
     var self = this;
@@ -261,7 +256,7 @@ var stringStartsWith = function (string, startsWith) {
 };
 
 
-// This function put information on the infowindow.
+// This function create divs, call Yelp and put information on the infowindow.
 function populateInfoWindow(marker, infowindow) {
     infowindow.setContent('<div><h3>' + marker.title + '</h3></div>' +
                           '<div id=img_place_holder>' +
