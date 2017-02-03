@@ -64,6 +64,7 @@ var clearMarkers = function() {
 };
 
 // Yelp API
+// Credit to https://arian.io/how-to-use-yelps-api-with-node/
 var getYelp = function(marker) {
     newNonce = function() {
         return (Math.floor(Math.random() * 1e9).toString());
@@ -101,16 +102,30 @@ var getYelp = function(marker) {
         cache: true,
         dataType: 'jsonp',
         success: function(response) {
+            var yelpImage = response.businesses[0].image_url || 'No image provided',
+                ratingImage = response.businesses[0].rating_img_url || 'No rating yet',
+                comment = response.businesses[0].snippet_text || 'No comments provided';
+
             // Update the infoWindow to display the yelp rating image
-            $('#yelp_image').attr("src", response.businesses[0].image_url);
-            $('#yelp').attr("src", response.businesses[0].rating_img_url);
-            // $('#yelp-url').attr("href", response.businesses[0].url);
+            // $('#yelp-image').attr("src", yelpImage);
+            // $('#yelp').attr("src", ratingImage);
+            // $('#yelp-text').append(comment);
 
-            $('#yelp_text').append(response.businesses[0].snippet_text);
 
+            infowindow.setContent('<div><h3>' + marker.title + '</h3></div>' +
+                                  '<div id=img-place-holder>' +
+                                    '<img id="yelp-image" src="'+ yelpImage +'"><br>' +
+                                    '<img id="yelp-rating" src="'+ ratingImage +'"><br>' +
+                                  '</div>' +
+                                  '<div id="yelp-text-holder">' +
+                                    '<p id="yelp-text">'+comment+'</p>' +
+                                  '</div>');
         },
-        error: function(response) {
-            // $('#text').html('Data could not be retrieved from yelp.');
+        error: function(response){
+            infowindow.setContent('<div><h3>' + marker.title + '</h3></div>' +
+                                  '<div>' +
+                                    '<p id="yelp-text">Server is unresponsive.</p>' +
+                                  '</div>');
         }
     };
 
@@ -153,7 +168,7 @@ var addMarkers = function(location, title, timeout) {
     }, timeout);
 };
 
-var dataLocation = function(thisData) {
+var DataLocation = function(thisData) {
     var self = this;
     self.name = ko.observable(thisData.name);
     self.location = ko.observable(thisData.location);
@@ -171,6 +186,11 @@ var dataLocation = function(thisData) {
         // Add listener event to open marker on click.
         self.marker.addListener('click', function() {
             self.populateTheInfoWindow = ko.observable(new populateInfoWindow(self.marker, infowindow));
+            self.marker.setAnimation(google.maps.Animation.BOUNCE);
+            window.setTimeout(function() {
+                self.marker.setAnimation(null);
+            }, 1000);
+
         });
         // Change the color of marker when the mouse is over the pin
         self.marker.addListener('mouseover', function() {
@@ -197,7 +217,7 @@ var ViewModel = function() {
     // Add to the array the data that comes from server, in this case
     // the json structure typed above.
     data.forEach(function(locationItem) {
-        self.locationList.push(new dataLocation(locationItem));
+        self.locationList.push(new DataLocation(locationItem));
     });
 
     /*
@@ -220,6 +240,7 @@ var ViewModel = function() {
 
     // Function to populate InfoWindow when clicked one item from the list
     self.markerInfo = function(markerIn) {
+        bounce(markerIn);
         populateInfoWindow(markerIn.marker, infowindow);
     };
 
@@ -258,15 +279,13 @@ var stringStartsWith = function (string, startsWith) {
 
 // This function create divs, call Yelp and put information on the infowindow.
 function populateInfoWindow(marker, infowindow) {
-    infowindow.setContent('<div><h3>' + marker.title + '</h3></div>' +
-                          '<div id=img_place_holder>' +
-                            '<img id="yelp_image"><br>' +
-                            '<img id="yelp"><br>' +
-                          '</div>' +
-                          '<div id="yelp_text_holder">' +
-                            '<p id="yelp_text"></p>' +
-                          '</div>');
     getYelp(marker);
     infowindow.open(map, marker);
+}
 
+function bounce(markerIn) {
+    markerIn.marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function() {
+        markerIn.marker.setAnimation(null);
+    }, 1000);
 }

@@ -1,5 +1,5 @@
 * {
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "Nunito Sans", sans-serif;
 }
 
 
@@ -11,7 +11,7 @@
     left: 0px;
 }
 
-#list_overmap {
+#list-overmap {
     position: absolute;
     top: 50px;
     left: 10px;
@@ -20,16 +20,16 @@
     background-color: white;
     opacity: .6;
 }
-#yelp_text {
+#yelp-text {
     font-style: italic;
 }
 
-#img_place_holder {
+#img-place-holder {
     float: left;
     width: 100px;
 }
 
-#yelp_text_holder {
+#yelp-text-holder {
     float: right;
     width: 295px;
     padding-left: 5px;

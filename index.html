@@ -3,13 +3,14 @@
     <head>
         <meta charset="utf-8">
         <title>Neighboorhood Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,700" rel="stylesheet">
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <div class="container">
             <div id="map"></div>
-            <div id="list_overmap">
+            <div id="list-overmap">
                 <h2>Locations:</h2>
                 <ul data-bind="foreach: locationFiltered">
                     <li data-bind="text: name,
@@ -31,9 +32,6 @@
 
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/knockout-3.2.0.js"></script>
-    <!-- <script src="http://oauth.googlecode.com/svn/code/javascript/oauth.js"></script>
-    <script src="http://oauth.googlecode.com/svn/code/javascript/sha1.js"></script> -->
-    <script src="js/yelpAPI.js"></script>
     <script src="js/node_modules/oauth-signer/oauth-signer-old.js"></script>
     <script src="js/node_modules/oauth-signature/dist/oauth-signature.js"></script>
     <script src="js/app.js"></script>
