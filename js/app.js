@@ -212,7 +212,7 @@ var DataLocation = function(thisData) {
 var ViewModel = function() {
     var self = this;
     self.locationList = ko.observableArray([]);
-    self.filter = ko.observable("");
+    self.filter = ko.observable('');
 
     // Add to the array the data that comes from server, in this case
     // the json structure typed above.
@@ -227,13 +227,13 @@ var ViewModel = function() {
     // Function to clear all markers on call.
     self.clearAllMarkers = function() {
         clearMarkers();
-
     };
 
     // Function to load all markers again.
     self.loadAllMarkers = function() {
         for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
+            showMarker(markers[i]);
+            // markers[i].setMap(map);
             markers[i].setAnimation(google.maps.Animation.DROP);
         }
     };
@@ -256,25 +256,26 @@ var ViewModel = function() {
 
     // Filter locations
     self.locationFiltered = ko.computed(function() {
+        self.query = ko.observable('');
         var filter = self.filter().toLowerCase();
         if (!filter) {
+            for (var i = 0; i < markers.length; i++) {
+                showMarker(markers[i]);
+            }
             return self.locationList();
         } else {
             return ko.utils.arrayFilter(self.locationList(), function(item) {
-                return stringStartsWith(item.name().toLowerCase(), filter);
+                 value = item.name().toLowerCase().indexOf(filter) >= 0;
+                 if (value) {
+                     item.marker.setMap(map);
+                     return item.name();
+                 } else {
+                     item.marker.setMap(null);
+                 }
             });
         }
     },self.filter);
-
 }.bind(this);
-
-// Function to search, used with filter locations.
-var stringStartsWith = function (string, startsWith) {
-    string = string || "";
-    if (startsWith.length > string.length)
-        return false;
-    return string.substring(0, startsWith.length) === startsWith;
-};
 
 
 // This function create divs, call Yelp and put information on the infowindow.
@@ -289,3 +290,11 @@ function bounce(markerIn) {
         markerIn.marker.setAnimation(null);
     }, 1000);
 }
+
+function showMarker(marker){
+    marker.setMap(map);
+}
+
+googleError = function(){
+    alert("Upsss. Looks like Google Map can't connect to server");
+};

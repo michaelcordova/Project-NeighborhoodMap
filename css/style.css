@@ -1,6 +1,10 @@
+
+
+
 * {
     font-family: "Nunito Sans", sans-serif;
 }
+
 
 
 #map {
@@ -9,6 +13,11 @@
     position: absolute;
     top: 0px;
     left: 0px;
+}
+
+#hamburger-icon{
+    display: none;
+    text-decoration: none;
 }
 
 #list-overmap {
@@ -75,4 +84,25 @@ li {
 li:hover {
   font-size: 25px;
   background: #f6f6f6;
+}
+
+/*
+   Media screen
+*/
+@media screen and (max-width: 680px) {
+    #list-overmap {
+        display: none;
+        opacity: .9;
+    }
+
+    #hamburger-icon {
+        width: 100px;
+        display: inline;
+        position: absolute;
+        top: 11px;
+        right: 8px;
+        z-index: 99;
+        background-color: white;
+        opacity: .9;
+    }
 }
